@@ -7,54 +7,34 @@ namespace FileManager
 {
     public class FileSystemVisitor
     {
-        delegate void search();
-        string path;
-        string name;
-        List<string> names = new List<string>();
+        private string path;
+        private List<string> fileNames = new List<string>();
+        private List<string> directoriesNames = new List<string>();
 
         public FileSystemVisitor(string path)
         {
             this.path = path;
-            search search;
-            search = FindFilesAndDirectories;
-            search += ShowFileTree;
-            search();
+            ProgramEvent programEvent = new ProgramEvent();
+            programEvent.SearchEvent += Start;
+            programEvent.SearchEvent += DirectoryFinded;
+            programEvent.SearchEvent += FilterDirectoriesFinded;
+            programEvent.SearchEvent += FileFinded;
+            programEvent.SearchEvent += FilterFilesFinded;
+            programEvent.SearchEvent += Finish;
+            programEvent.OnSearchEvent();
         }
 
-        public FileSystemVisitor(string path,string name)
+        public void FileFinded()
         {
-            this.path = path;
-            this.name = name;
-            search search;
-            search = FindFilesAndDirectories;
-            search += FilterByNameInDirectory;
-            search += ShowFileTree;
-            search();
-        }
-
-        public void ShowFileTree()
-        {
-            Console.WriteLine($"\r\nAll directories and files in {path}");
-            foreach (var name in names)
-            {                              
-                Console.WriteLine("\t" + name);
-            }
-            Console.WriteLine("The searching is finished.");
-        }
-
-        public void FindFilesAndDirectories()
-        {
-            Console.WriteLine("Started searching...");
             if (Directory.Exists(path))
             {
                 List<string> n = new List<string>();
-                names = Directory.GetDirectories(path).ToList();
-                names.AddRange(Directory.GetFiles(path).ToList());
-                foreach (var name in names)
+                fileNames.AddRange(Directory.GetFiles(path).ToList());
+                foreach (var name in fileNames)
                 {
                     n.Add(name.Replace(path + "\\", ""));
                 }
-                names = n;
+                fileNames = n;
             }
             else
             {
@@ -62,11 +42,72 @@ namespace FileManager
             }
         }
 
-        public void FilterByNameInDirectory()
+        public void DirectoryFinded()
         {
-            names = names.Where(n => n.Contains(name)).ToList();
+            if (Directory.Exists(path))
+            {
+                List<string> n = new List<string>();
+                directoriesNames = Directory.GetDirectories(path).ToList();                
+                foreach (var name in directoriesNames)
+                {
+                    n.Add(name.Replace(path + "\\", ""));
+                }
+                directoriesNames = n;
+            }
+            else
+            {
+                Console.WriteLine("Path is incorrect.");
+            }
         }
 
+        public void FilterFilesFinded()
+        {
+            Console.WriteLine("Files:");
+            foreach (var name in fileNames)
+            {
+                if (name.Contains("pptx"))
+                {
+                    Console.WriteLine(name);
+                    if (!Helper.YesOrNo("Next? Y/N"))
+                    {
+                        break;
+                    }
+                }
+            }
+        }
 
+        public void FilterDirectoriesFinded()
+        {
+            Console.WriteLine("Directories:");
+            string filter = null;
+            bool hasFilter = Helper.YesOrNo("Do you want to filter directories? Y/N");
+            if (hasFilter)
+            {
+                Console.WriteLine("Enter filter(directory name): ");
+                filter = Console.ReadLine();
+            }
+            foreach (var name in directoriesNames)
+            {
+                if (hasFilter && !name.Contains(filter))
+                {
+                    continue;
+                }
+                Console.WriteLine(name);
+                if (!Helper.YesOrNo("Next? Y/N"))
+                {
+                    break;
+                }
+            }
+        }
+
+        public void Start()
+        {
+            Console.WriteLine("The searching is started.");
+        }
+
+        public void Finish()
+        {
+            Console.WriteLine("The searching is finished.");            
+        }
     }
 }
