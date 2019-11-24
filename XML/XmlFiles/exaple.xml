@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+  <Magazine>
+    <Name>Time</Name>
+    <City>New York</City>
+    <CompanyName>Time Inc.</CompanyName>
+    <PublicationDate>03.03.1990 0:00:00</PublicationDate>
+    <NumberOfPage>50</NumberOfPage>
+    <Note>Time is an American weekly news magazine and news website published in New York City. </Note>
+    <Issue>200</Issue>
+    <Date>24.11.2019 0:00:00</Date>
+    <ISSN>0040-781X</ISSN>
+  </Magazine>
+  <Patent>
+    <Name>IPhone</Name>
+    <Inventor>Apple</Inventor>
+    <Country>USA</Country>
+    <RegistrationNumber>D0000126</RegistrationNumber>
+    <ApplicationDate>12.02.2007 0:00:00</ApplicationDate>
+    <PublicationDate>20.05.2007 0:00:00</PublicationDate>
+    <NumberOfPage>20</NumberOfPage>
+    <Note></Note>
+  </Patent>
+  <Book>
+    <Name>1984</Name>
+    <Autor>Джордж Оруэлл</Autor>
+    <City>Москва</City>
+    <CompanyName>ACT</CompanyName>
+    <PublicationDate>20.07.2015 0:00:00</PublicationDate>
+    <NumberOfPage>320</NumberOfPage>
+    <Note>Своеобразный антипод второй великой антиутопии XX века — «О дивный новый мир» Олдоса Хаксли.</Note>
+    <ISBN>978-5-17-080115-2</ISBN>
+  </Book>
+</objects>
